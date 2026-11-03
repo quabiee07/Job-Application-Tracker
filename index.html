@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="A simple, modern, and mature Job Application Tracker.">
+  <title>Job Application Tracker</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="app-layout">
+    <!-- Header -->
+    <header class="app-header">
+      <div class="header-content">
+        <div class="brand">
+          <div class="brand-badge" aria-hidden="true">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="2" y="7" width="20" height="14" rx="2.5" ry="2.5"></rect>
+              <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path>
+            </svg>
+          </div>
+          <div class="brand-text">
+            <div class="brand-row">
+              <h1 class="brand-title">Job Application Tracker</h1>
+              <span class="brand-pill">Local & Private</span>
+            </div>
+            <p class="brand-subtitle">Organize, monitor, and accelerate your job search pipeline</p>
+          </div>
+        </div>
+
+        <button id="open-add-btn" class="btn btn-primary" type="button" aria-haspopup="dialog">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <line x1="12" y1="5" x2="12" y2="19"></line>
+            <line x1="5" y1="12" x2="19" y2="12"></line>
+          </svg>
+          <span>Add Application</span>
+        </button>
+      </div>
+
+      <!-- Modern Interactive Stats Overview Bar at the Top -->
+      <section class="stats-overview" aria-label="Application statistics overview and quick filters">
+        <button type="button" class="stat-card stat-total active" data-filter="ALL" aria-pressed="true" aria-label="Filter by all applications">
+          <div class="stat-meta">
+            <span class="stat-label">Total Applications</span>
+            <span class="stat-number" id="total-count">0</span>
+          </div>
+          <div class="stat-icon-wrapper" aria-hidden="true">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"></path>
+            </svg>
+          </div>
+        </button>
+
+        <button type="button" class="stat-card stat-applied" data-filter="Applied" aria-pressed="false" aria-label="Filter by Applied status">
+          <div class="stat-meta">
+            <span class="stat-label">Applied</span>
+            <span class="stat-number" id="applied-count">0</span>
+          </div>
+          <span class="status-indicator applied" aria-hidden="true"></span>
+        </button>
+
+        <button type="button" class="stat-card stat-interviewing" data-filter="Interviewing" aria-pressed="false" aria-label="Filter by Interviewing status">
+          <div class="stat-meta">
+            <span class="stat-label">Interviewing</span>
+            <span class="stat-number" id="interviewing-count">0</span>
+          </div>
+          <span class="status-indicator interviewing" aria-hidden="true"></span>
+        </button>
+
+        <button type="button" class="stat-card stat-offer" data-filter="Offer" aria-pressed="false" aria-label="Filter by Offer status">
+          <div class="stat-meta">
+            <span class="stat-label">Offer</span>
+            <span class="stat-number" id="offer-count">0</span>
+          </div>
+          <span class="status-indicator offer" aria-hidden="true"></span>
+        </button>
+
+        <button type="button" class="stat-card stat-rejected" data-filter="Rejected" aria-pressed="false" aria-label="Filter by Rejected status">
+          <div class="stat-meta">
+            <span class="stat-label">Rejected</span>
+            <span class="stat-number" id="rejected-count">0</span>
+          </div>
+          <span class="status-indicator rejected" aria-hidden="true"></span>
+        </button>
+      </section>
+    </header>
+
+    <!-- Main Content Area -->
+    <main class="main-content">
+      <!-- Toolbar: Search and Filter -->
+      <section class="toolbar" aria-label="Search and filter controls">
+        <div class="search-box">
+          <svg class="search-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <circle cx="11" cy="11" r="8"></circle>
+            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+          </svg>
+          <input 
+            type="search" 
+            id="search-input" 
+            placeholder="Search by company, role, or status..." 
+            aria-label="Search applications"
+            autocomplete="off"
+            spellcheck="false"
+          >
+          <div class="search-shortcut" id="search-shortcut" aria-hidden="true">
+            <kbd>/</kbd>
+          </div>
+          <button type="button" id="clear-search-btn" class="clear-btn" aria-label="Clear search input" hidden>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="18" y1="6" x2="6" y2="18"></line>
+              <line x1="6" y1="6" x2="18" y2="18"></line>
+            </svg>
+          </button>
+        </div>
+
+        <div class="filter-group">
+          <label for="status-filter" class="filter-label">Filter Status</label>
+          <div class="select-wrapper">
+            <select id="status-filter" class="filter-select" aria-label="Filter applications by status">
+              <option value="ALL">All Statuses</option>
+              <option value="Applied">Applied</option>
+              <option value="Interviewing">Interviewing</option>
+              <option value="Offer">Offer</option>
+              <option value="Rejected">Rejected</option>
+            </select>
+          </div>
+        </div>
+      </section>
+
+      <!-- Active Filter / Search notification banner -->
+      <div id="filter-feedback" class="filter-feedback" hidden>
+        <div class="filter-feedback-info">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <circle cx="12" cy="12" r="10"></circle>
+            <line x1="12" y1="16" x2="12" y2="12"></line>
+            <line x1="12" y1="8" x2="12.01" y2="8"></line>
+          </svg>
+          <span id="filter-feedback-text">Showing filtered results</span>
+        </div>
+        <button type="button" id="reset-filters-btn" class="btn-text">Reset all filters</button>
+      </div>
+
+      <!-- Application List -->
+      <section class="applications-container" aria-label="Applications list">
+        <div id="applications-list" class="applications-list" role="list"></div>
+
+        <!-- Empty State (No applications stored at all) -->
+        <div id="empty-state" class="state-card" hidden>
+          <div class="state-icon-halo">
+            <div class="state-icon-circle">
+              <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                <polyline points="14 2 14 8 20 8"></polyline>
+                <line x1="12" y1="18" x2="12" y2="12"></line>
+                <line x1="9" y1="15" x2="15" y2="15"></line>
+              </svg>
+            </div>
+          </div>
+          <h2 class="state-title">No job applications yet</h2>
+          <p class="state-description">
+            Your pipeline is completely empty. Start tracking submissions, interviews, and offers in one calm, private space.
+          </p>
+          <div class="state-actions">
+            <button type="button" id="empty-add-btn" class="btn btn-primary">
+              <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                <line x1="12" y1="5" x2="12" y2="19"></line>
+                <line x1="5" y1="12" x2="19" y2="12"></line>
+              </svg>
+              <span>Add Your First Application</span>
+            </button>
+            <button type="button" id="load-samples-btn" class="btn btn-secondary">
+              Load Sample Data
+            </button>
+          </div>
+        </div>
+
+        <!-- No Results State (Search/Filter found 0 matches) -->
+        <div id="no-results-state" class="state-card" hidden>
+          <div class="state-icon-halo">
+            <div class="state-icon-circle">
+              <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="11" cy="11" r="8"></circle>
+                <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                <line x1="8" y1="11" x2="14" y2="11"></line>
+              </svg>
+            </div>
+          </div>
+          <h2 class="state-title">No matching applications</h2>
+          <p class="state-description" id="no-results-message">
+            We couldn't find any applications matching your search or filters.
+          </p>
+          <button type="button" id="clear-search-action-btn" class="btn btn-secondary">
+            Clear Search & Filters
+          </button>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <!-- Add / Edit Application Modal Dialog -->
+  <dialog id="application-dialog" class="app-dialog" aria-labelledby="dialog-title">
+    <div class="dialog-content">
+      <div class="dialog-header">
+        <div>
+          <h2 id="dialog-title" class="dialog-title">Add Application</h2>
+          <p class="dialog-subtitle" id="dialog-subtitle">Record details of your job application</p>
+        </div>
+        <button type="button" id="dialog-close-btn" class="icon-btn-close" aria-label="Close dialog">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="18" y1="6" x2="6" y2="18"></line>
+            <line x1="6" y1="6" x2="18" y2="18"></line>
+          </svg>
+        </button>
+      </div>
+
+      <form id="application-form" novalidate>
+        <input type="hidden" id="application-id">
+
+        <div class="form-field">
+          <label for="company-input" class="form-label">
+            Company <span class="required" aria-hidden="true">*</span>
+          </label>
+          <input 
+            type="text" 
+            id="company-input" 
+            name="company" 
+            class="form-input" 
+            placeholder="e.g. Stripe, Apple, Figma"
+            required
+            maxlength="100"
+            autocomplete="organization"
+          >
+          <span class="field-error" id="company-error" role="alert" aria-live="polite"></span>
+        </div>
+
+        <div class="form-field">
+          <label for="role-input" class="form-label">
+            Role / Position <span class="required" aria-hidden="true">*</span>
+          </label>
+          <input 
+            type="text" 
+            id="role-input" 
+            name="role" 
+            class="form-input" 
+            placeholder="e.g. Product Designer, Software Engineer"
+            required
+            maxlength="100"
+            autocomplete="organization-title"
+          >
+          <span class="field-error" id="role-error" role="alert" aria-live="polite"></span>
+        </div>
+
+        <div class="form-field">
+          <label for="status-input" class="form-label">
+            Status <span class="required" aria-hidden="true">*</span>
+          </label>
+          <div class="select-wrapper">
+            <select id="status-input" name="status" class="form-select" required>
+              <option value="Applied">Applied</option>
+              <option value="Interviewing">Interviewing</option>
+              <option value="Offer">Offer</option>
+              <option value="Rejected">Rejected</option>
+            </select>
+          </div>
+          <span class="field-error" id="status-error" role="alert" aria-live="polite"></span>
+        </div>
+
+        <div class="dialog-actions">
+          <button type="button" id="dialog-cancel-btn" class="btn btn-secondary">
+            Cancel
+          </button>
+          <button type="submit" id="dialog-submit-btn" class="btn btn-primary">
+            Save Application
+          </button>
+        </div>
+      </form>
+    </div>
+  </dialog>
+
+  <!-- Delete Confirmation Modal Dialog -->
+  <dialog id="confirm-delete-dialog" class="app-dialog confirm-dialog" aria-labelledby="delete-dialog-title" aria-describedby="delete-dialog-desc">
+    <div class="dialog-content">
+      <div class="dialog-header-danger">
+        <div class="danger-icon-wrapper" aria-hidden="true">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="3 6 5 6 21 6"></polyline>
+            <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+            <line x1="10" y1="11" x2="10" y2="17"></line>
+            <line x1="14" y1="11" x2="14" y2="17"></line>
+          </svg>
+        </div>
+        <div>
+          <h2 id="delete-dialog-title" class="dialog-title">Delete Application</h2>
+          <p class="dialog-subtitle">This action cannot be undone</p>
+        </div>
+      </div>
+
+      <p id="delete-dialog-desc" class="delete-description">
+        Are you sure you want to permanently remove this application from your tracker?
+      </p>
+
+      <div class="delete-item-preview" id="delete-item-preview">
+        <!-- Injected via JS -->
+      </div>
+
+      <div class="dialog-actions">
+        <button type="button" id="cancel-delete-btn" class="btn btn-secondary">
+          Cancel
+        </button>
+        <button type="button" id="confirm-delete-btn" class="btn btn-danger">
+          Delete Application
+        </button>
+      </div>
+    </div>
+  </dialog>
+
+  <!-- Toast notification for quick friendly user feedback -->
+  <div id="toast" class="toast" role="status" aria-live="polite" hidden></div>
+
+  <script src="script.js"></script>
+</body>
+</html>
