@@ -6,6 +6,8 @@
   <meta name="description" content="A simple, modern, and mature Job Application Tracker.">
   <title>Job Application Tracker</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -23,7 +25,7 @@
           <div class="brand-text">
             <div class="brand-row">
               <h1 class="brand-title">Job Application Tracker</h1>
-              <span class="brand-pill">Local & Private</span>
+              <span class="brand-pill">Local &amp; Private</span>
             </div>
             <p class="brand-subtitle">Organize, monitor, and accelerate your job search pipeline</p>
           </div>
@@ -38,11 +40,11 @@
         </button>
       </div>
 
-      <!-- Modern Interactive Stats Overview Bar at the Top -->
+      <!-- Interactive Stats Overview Bar -->
       <section class="stats-overview" aria-label="Application statistics overview and quick filters">
         <button type="button" class="stat-card stat-total active" data-filter="ALL" aria-pressed="true" aria-label="Filter by all applications">
           <div class="stat-meta">
-            <span class="stat-label">Total Applications</span>
+            <span class="stat-label">Total</span>
             <span class="stat-number" id="total-count">0</span>
           </div>
           <div class="stat-icon-wrapper" aria-hidden="true">
@@ -145,10 +147,10 @@
       <section class="applications-container" aria-label="Applications list">
         <div id="applications-list" class="applications-list" role="list"></div>
 
-        <!-- Empty State (No applications stored at all) -->
+        <!-- Empty State -->
         <div id="empty-state" class="state-card" hidden>
           <div class="state-icon-halo">
-            <div class="state-icon-circle">
+            <div class="state-icon-circle state-icon-float">
               <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
                 <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
                 <polyline points="14 2 14 8 20 8"></polyline>
@@ -175,10 +177,10 @@
           </div>
         </div>
 
-        <!-- No Results State (Search/Filter found 0 matches) -->
+        <!-- No Results State -->
         <div id="no-results-state" class="state-card" hidden>
           <div class="state-icon-halo">
-            <div class="state-icon-circle">
+            <div class="state-icon-circle state-icon-float">
               <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
                 <circle cx="11" cy="11" r="8"></circle>
                 <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
@@ -191,7 +193,7 @@
             We couldn't find any applications matching your search or filters.
           </p>
           <button type="button" id="clear-search-action-btn" class="btn btn-secondary">
-            Clear Search & Filters
+            Clear Search &amp; Filters
           </button>
         </div>
       </section>
@@ -315,8 +317,18 @@
     </div>
   </dialog>
 
-  <!-- Toast notification for quick friendly user feedback -->
-  <div id="toast" class="toast" role="status" aria-live="polite" hidden></div>
+  <!-- Toast notification -->
+  <div id="toast" class="toast" role="status" aria-live="polite" hidden>
+    <div class="toast-body">
+      <span class="toast-icon" id="toast-icon" aria-hidden="true">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="20 6 9 17 4 12"></polyline>
+        </svg>
+      </span>
+      <span class="toast-message" id="toast-message"></span>
+    </div>
+    <div class="toast-progress" id="toast-progress"></div>
+  </div>
 
   <script src="script.js"></script>
 </body>
